@@ -1,3 +1,5 @@
+package httpfailover;
+
 import org.apache.http.HttpRequest;
 
 /**

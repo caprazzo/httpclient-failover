@@ -1,3 +1,5 @@
+package httpfailover;
+
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpRequest;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -16,7 +18,7 @@ import java.io.IOException;
  *  OR  the request has not been send
  *  OR  the request has been sent and <code>requestSentRetryEnabled</code> is <code>true</code>
  *
- *  (Also consider {link @StandardFailoverRetryHandler})
+ *  (Also consider {link @httpfailover.StandardFailoverRetryHandler})
  */
 public class DefaultFailoverRetryHandler implements FailoverRetryHandler {
 
@@ -27,7 +29,7 @@ public class DefaultFailoverRetryHandler implements FailoverRetryHandler {
     private final boolean requestSentRetryEnabled;
 
     /**
-     * Create a new DefaultFailoverRetryHandler
+     * Create a new httpfailover.DefaultFailoverRetryHandler
      *
      * @param retryCount the number of times each host can be retried
      * @param requestSentRetryEnabled whether or not methods that have successfully sent their request will be retried
@@ -38,7 +40,7 @@ public class DefaultFailoverRetryHandler implements FailoverRetryHandler {
     }
 
     /**
-     * Create a new DefaultFailoverRetryHandler with
+     * Create a new httpfailover.DefaultFailoverRetryHandler with
      * retryCount = 3 and requestSentRetryEnabled = false
      */
     public DefaultFailoverRetryHandler() {

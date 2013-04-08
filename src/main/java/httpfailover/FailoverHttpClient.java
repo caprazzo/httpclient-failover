@@ -1,3 +1,5 @@
+package httpfailover;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
@@ -7,7 +9,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.annotation.GuardedBy;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
@@ -34,6 +38,33 @@ public class FailoverHttpClient extends DefaultHttpClient {
     /** the multi-target retry handler **/
     @GuardedBy("this")
     private FailoverRetryHandler multiTargetRetryHandler = null;
+
+    /**
+     * Creates a new HTTP client from parameters and a connection manager.
+     *
+     * @param params    the parameters
+     * @param conman    the connection manager
+     */
+    public FailoverHttpClient(
+            final ClientConnectionManager conman,
+            final HttpParams params) {
+        super(conman, params);
+    }
+
+    public FailoverHttpClient(
+            final ClientConnectionManager conman) {
+        super(conman, null);
+    }
+
+
+    public FailoverHttpClient(final HttpParams params) {
+        super(null, params);
+    }
+
+
+    public FailoverHttpClient() {
+        super(null, null);
+    }
 
     public synchronized FailoverRetryHandler getMultiTargetRetryHandler() {
         if (multiTargetRetryHandler == null) {

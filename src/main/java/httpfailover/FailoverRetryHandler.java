@@ -1,3 +1,5 @@
+package httpfailover;
+
 import org.apache.http.protocol.HttpContext;
 
 import java.io.IOException;
