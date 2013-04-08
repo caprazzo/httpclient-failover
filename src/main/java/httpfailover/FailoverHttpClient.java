@@ -73,6 +73,10 @@ public class FailoverHttpClient extends DefaultHttpClient {
         return multiTargetRetryHandler;
     }
 
+    /**
+     * Set a for determining if an HttpRequest should fail over a different host
+     * @param handler the handler
+     */
     public synchronized void setMultiTargetRetryHandler(FailoverRetryHandler handler) {
         this.multiTargetRetryHandler = handler;
     }
