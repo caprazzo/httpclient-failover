@@ -114,13 +114,13 @@ public class FailoverHttpClient extends DefaultHttpClient {
             throws IOException, ClientProtocolException {
 
         FailoverRetryHandler retryHandler = getMultiTargetRetryHandler();
-        int executionCount = 0;
+        int executionCount = 1;
         while(true) {
             try {
                 return executeMulti(targets, request, context);
             }
             catch(IOException ex) {
-                if (executionCount > retryHandler.getRetryCount()) {
+                if (executionCount >= retryHandler.getRetryCount()) {
                     throw  ex;
                 }
                 logRetry(ex);
@@ -163,46 +163,35 @@ public class FailoverHttpClient extends DefaultHttpClient {
     public <T> T execute(List<HttpHost> targets, HttpRequest request, ResponseHandler<? extends T> responseHandler, HttpContext context)
             throws IOException, ClientProtocolException {
 
-        FailoverRetryHandler retryHandler = getMultiTargetRetryHandler();
-        int executionCount = 0;
-        while(true) {
-            try {
-                HttpResponse response = executeMulti(targets, request, context);
-                T result;
-                try {
-                    result = responseHandler.handleResponse(response);
-                } catch (Exception t) {
-                    HttpEntity entity = response.getEntity();
-                    try {
-                        EntityUtils.consume(entity);
-                    } catch (Exception t2) {
-                        // Log this exception. The original exception is more
-                        // important and will be thrown to the caller.
-                        this.log.warn("Error consuming content after an exception.", t2);
-                    }
-                    if (t instanceof RuntimeException) {
-                        throw (RuntimeException) t;
-                    }
-                    if (t instanceof IOException) {
-                        throw (IOException) t;
-                    }
-                    throw new UndeclaredThrowableException(t);
-                }
 
-                // Handling the response was successful. Ensure that the content has
-                // been fully consumed.
-                HttpEntity entity = response.getEntity();
+        HttpResponse response = execute(targets, request, context);
+        T result;
+        try {
+            result = responseHandler.handleResponse(response);
+        } catch (Exception t) {
+            HttpEntity entity = response.getEntity();
+            try {
                 EntityUtils.consume(entity);
-                return result;
+            } catch (Exception t2) {
+                // Log this exception. The original exception is more
+                // important and will be thrown to the caller.
+                this.log.warn("Error consuming content after an exception.", t2);
             }
-            catch(IOException ex) {
-                if (executionCount > retryHandler.getRetryCount()) {
-                    throw  ex;
-                }
-                logRetry(ex);
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
             }
-            executionCount++;
+            if (t instanceof IOException) {
+                throw (IOException) t;
+            }
+            throw new UndeclaredThrowableException(t);
         }
+
+        // Handling the response was successful. Ensure that the content has
+        // been fully consumed.
+        HttpEntity entity = response.getEntity();
+        EntityUtils.consumeQuietly(entity);
+
+        return result;
     }
 
     private HttpResponse executeMulti(List<HttpHost> targets, HttpRequest request, HttpContext context)
