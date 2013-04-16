@@ -3,6 +3,28 @@ httpclient-failover
 
 An extension to apache httpclient that adds support for failover on multiple http hosts.
 
+
+### Using from maven
+
+    <repositories>
+        <repository>
+            <id>mcaprari-releases</id>
+            <url>https://github.com/mcaprari/mcaprari-maven-repo/raw/master/releases</url>
+        </repository>
+        <repository>
+            <id>mcaprari-snapshots</id>
+            <url>https://github.com/mcaprari/mcaprari-maven-repo/raw/master/snapshots</url>
+        </repository>
+    </repositories>
+
+    <dependency>
+        <groupId>httpfailover</groupId>
+        <artifactId>httpclient-failover</artifactId>
+        <version>1.0</version>
+    </dependency>
+
+
+
 FailoverHttpClient extends DefaultHttpClient adding few methods:
 
     /**
