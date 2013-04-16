@@ -7,11 +7,22 @@
     <name>httpclient-failover</name>
     <groupId>httpfailover</groupId>
     <artifactId>httpclient-failover</artifactId>
-    <version>1.0</version>
+    <version>1.0</version>    
 
     <description>
         An extension to apache httpclient that adds support for failover on multiple http hosts.
     </description>
+
+    <distributionManagement>
+    <repository>
+        <id>repo</id>
+        <url>https://github.com/mcaprari/mcaprari-maven-repo</raw/master/releases</url>
+    </repository>
+    <snapshotRepository>
+        <id>snapshot-repo</id>
+        <url>https://github.com/mcaprari/mcaprari-maven-repo</raw/master/snapshots</url>
+    </snapshotRepository>
+</distributionManagement>
 
     <contributors>
         <contributor>
