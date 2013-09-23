@@ -84,3 +84,7 @@ FailoverHttpClient extends DefaultHttpClient adding few methods:
     HttpGet request = new HttpGet(URI.create("/file.txt"));
 
     HttpResponse response = failoverHttpClient.execute(hosts, request);
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mcaprari/httpclient-failover/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
